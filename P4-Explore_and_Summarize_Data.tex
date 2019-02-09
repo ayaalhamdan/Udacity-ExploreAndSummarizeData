@@ -1,0 +1,269 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+
+  \title{}
+    \pretitle{\vspace{\droptitle}}
+  \posttitle{}
+    \author{}
+    \preauthor{}\postauthor{}
+    \date{}
+    \predate{}\postdate{}
+  
+
+\begin{document}
+
+\section{Explore and Summarize Data/Red Wine Quality by Ayah
+AlHamdan}\label{explore-and-summarize-datared-wine-quality-by-ayah-alhamdan}
+
+\section{Introduction}\label{introduction}
+
+In this project, I will use the data of Red Wine Quality to perform
+exploratory data analysis using R to know what influences the quality of
+red wines.
+
+\section{Data Overview}\label{data-overview}
+
+First, we'll have a look at the data.
+
+\begin{verbatim}
+## Observations: 1,599
+## Variables: 13
+## $ X                    <int> 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13...
+## $ fixed.acidity        <dbl> 7.4, 7.8, 7.8, 11.2, 7.4, 7.4, 7.9, 7.3, ...
+## $ volatile.acidity     <dbl> 0.700, 0.880, 0.760, 0.280, 0.700, 0.660,...
+## $ citric.acid          <dbl> 0.00, 0.00, 0.04, 0.56, 0.00, 0.00, 0.06,...
+## $ residual.sugar       <dbl> 1.9, 2.6, 2.3, 1.9, 1.9, 1.8, 1.6, 1.2, 2...
+## $ chlorides            <dbl> 0.076, 0.098, 0.092, 0.075, 0.076, 0.075,...
+## $ free.sulfur.dioxide  <dbl> 11, 25, 15, 17, 11, 13, 15, 15, 9, 17, 15...
+## $ total.sulfur.dioxide <dbl> 34, 67, 54, 60, 34, 40, 59, 21, 18, 102, ...
+## $ density              <dbl> 0.9978, 0.9968, 0.9970, 0.9980, 0.9978, 0...
+## $ pH                   <dbl> 3.51, 3.20, 3.26, 3.16, 3.51, 3.51, 3.30,...
+## $ sulphates            <dbl> 0.56, 0.68, 0.65, 0.58, 0.56, 0.56, 0.46,...
+## $ alcohol              <dbl> 9.4, 9.8, 9.8, 9.8, 9.4, 9.4, 9.4, 10.0, ...
+## $ quality              <int> 5, 5, 5, 6, 5, 5, 5, 7, 7, 5, 5, 5, 5, 5,...
+\end{verbatim}
+
+There are 1599 observations and 13 variables. The X variable is an index
+for each observation in the dataset, while the other variables are
+chemical properties and the quality of the wine.
+
+\section{Univariate Plots Section}\label{univariate-plots-section}
+
+\begin{quote}
+\textbf{Tip}: In this section, you should perform some preliminary
+exploration of your dataset. Run some summaries of the data and create
+univariate plots to understand the structure of the individual variables
+in your dataset. Don't forget to add a comment after each plot or
+closely-related group of plots! There should be multiple code chunks and
+text sections; the first one below is just to help you get started.
+\end{quote}
+
+\section{Univariate Analysis}\label{univariate-analysis}
+
+\begin{quote}
+\textbf{Tip}: Now that you've completed your univariate explorations,
+it's time to reflect on and summarize what you've found. Use the
+questions below to help you gather your observations and add your own if
+you have other thoughts!
+\end{quote}
+
+\subsubsection{What is the structure of your
+dataset?}\label{what-is-the-structure-of-your-dataset}
+
+\subsubsection{What is/are the main feature(s) of interest in your
+dataset?}\label{what-isare-the-main-features-of-interest-in-your-dataset}
+
+\subsubsection{\texorpdfstring{What other features in the dataset do you
+think will help support your\\
+investigation into your feature(s) of
+interest?}{What other features in the dataset do you think will help support your investigation into your feature(s) of interest?}}\label{what-other-features-in-the-dataset-do-you-think-will-help-support-your-investigation-into-your-features-of-interest}
+
+\subsubsection{Did you create any new variables from existing variables
+in the
+dataset?}\label{did-you-create-any-new-variables-from-existing-variables-in-the-dataset}
+
+\subsubsection{\texorpdfstring{Of the features you investigated, were
+there any unusual distributions?\\
+Did you perform any operations on the data to tidy, adjust, or change
+the form\\
+of the data? If so, why did you do
+this?}{Of the features you investigated, were there any unusual distributions? Did you perform any operations on the data to tidy, adjust, or change the form of the data? If so, why did you do this?}}\label{of-the-features-you-investigated-were-there-any-unusual-distributions-did-you-perform-any-operations-on-the-data-to-tidy-adjust-or-change-the-form-of-the-data-if-so-why-did-you-do-this}
+
+\section{Bivariate Plots Section}\label{bivariate-plots-section}
+
+\begin{quote}
+\textbf{Tip}: Based on what you saw in the univariate plots, what
+relationships between variables might be interesting to look at in this
+section? Don't limit yourself to relationships between a main output
+feature and one of the supporting variables. Try to look at
+relationships between supporting variables as well.
+\end{quote}
+
+\section{Bivariate Analysis}\label{bivariate-analysis}
+
+\begin{quote}
+\textbf{Tip}: As before, summarize what you found in your bivariate
+explorations here. Use the questions below to guide your discussion.
+\end{quote}
+
+\subsubsection{\texorpdfstring{Talk about some of the relationships you
+observed in this part of the\\
+investigation. How did the feature(s) of interest vary with other
+features in\\
+the
+dataset?}{Talk about some of the relationships you observed in this part of the investigation. How did the feature(s) of interest vary with other features in the dataset?}}\label{talk-about-some-of-the-relationships-you-observed-in-this-part-of-the-investigation.-how-did-the-features-of-interest-vary-with-other-features-in-the-dataset}
+
+\subsubsection{\texorpdfstring{Did you observe any interesting
+relationships between the other features\\
+(not the main feature(s) of
+interest)?}{Did you observe any interesting relationships between the other features (not the main feature(s) of interest)?}}\label{did-you-observe-any-interesting-relationships-between-the-other-features-not-the-main-features-of-interest}
+
+\subsubsection{What was the strongest relationship you
+found?}\label{what-was-the-strongest-relationship-you-found}
+
+\section{Multivariate Plots Section}\label{multivariate-plots-section}
+
+\begin{quote}
+\textbf{Tip}: Now it's time to put everything together. Based on what
+you found in the bivariate plots section, create a few multivariate
+plots to investigate more complex interactions between variables. Make
+sure that the plots that you create here are justified by the plots you
+explored in the previous section. If you plan on creating any
+mathematical models, this is the section where you will do that.
+\end{quote}
+
+\section{Multivariate Analysis}\label{multivariate-analysis}
+
+\subsubsection{\texorpdfstring{Talk about some of the relationships you
+observed in this part of the\\
+investigation. Were there features that strengthened each other in terms
+of\\
+looking at your feature(s) of
+interest?}{Talk about some of the relationships you observed in this part of the investigation. Were there features that strengthened each other in terms of looking at your feature(s) of interest?}}\label{talk-about-some-of-the-relationships-you-observed-in-this-part-of-the-investigation.-were-there-features-that-strengthened-each-other-in-terms-of-looking-at-your-features-of-interest}
+
+\subsubsection{Were there any interesting or surprising interactions
+between
+features?}\label{were-there-any-interesting-or-surprising-interactions-between-features}
+
+\subsubsection{\texorpdfstring{OPTIONAL: Did you create any models with
+your dataset? Discuss the\\
+strengths and limitations of your
+model.}{OPTIONAL: Did you create any models with your dataset? Discuss the strengths and limitations of your model.}}\label{optional-did-you-create-any-models-with-your-dataset-discuss-the-strengths-and-limitations-of-your-model.}
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\section{Final Plots and Summary}\label{final-plots-and-summary}
+
+\begin{quote}
+\textbf{Tip}: You've done a lot of exploration and have built up an
+understanding of the structure of and relationships between the
+variables in your dataset. Here, you will select three plots from all of
+your previous exploration to present here as a summary of some of your
+most interesting findings. Make sure that you have refined your selected
+plots for good titling, axis labels (with units), and good aesthetic
+choices (e.g.~color, transparency). After each plot, make sure you
+justify why you chose each plot by describing what it shows.
+\end{quote}
+
+\subsubsection{Plot One}\label{plot-one}
+
+\subsubsection{Description One}\label{description-one}
+
+\subsubsection{Plot Two}\label{plot-two}
+
+\subsubsection{Description Two}\label{description-two}
+
+\subsubsection{Plot Three}\label{plot-three}
+
+\subsubsection{Description Three}\label{description-three}
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\section{Reflection}\label{reflection}
+
+\begin{quote}
+\textbf{Tip}: Here's the final step! Reflect on the exploration you
+performed and the insights you found. What were some of the struggles
+that you went through? What went well? What was surprising? Make sure
+you include an insight into future work that could be done with the
+dataset.
+\end{quote}
+
+\begin{quote}
+\textbf{Tip}: Don't forget to remove this, and the other \textbf{Tip}
+sections before saving your final work and knitting the final report!
+\end{quote}
+
+
+\end{document}
